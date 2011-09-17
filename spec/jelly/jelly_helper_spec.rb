@@ -67,7 +67,7 @@ describe JellyHelper, :type => :helper do
       ]
     end
 
-    it "adds a call to Jelly.attach in an $(document).ready block" do
+    it "adds a call to Jelly.attach in an jQuery(document).ready block" do
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       expected_args = ['arg1','arg2','arg3'].to_json
       helper.instance_variable_get(:@jelly_attachments).should == [
@@ -77,7 +77,7 @@ describe JellyHelper, :type => :helper do
       html = helper.spread_jelly
       doc = Nokogiri::HTML(html)
       document_ready_tag = doc.css("script")[1]
-      document_ready_tag.inner_html.should include("$(document).ready(function() {")
+      document_ready_tag.inner_html.should include("jQuery(document).ready(function() {")
       document_ready_part = document_ready_tag.inner_html.split("\n")[3]
       arguments = jelly_attach_arguments(document_ready_part)
       arguments.should include({'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']})

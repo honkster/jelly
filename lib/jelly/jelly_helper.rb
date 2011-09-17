@@ -27,7 +27,7 @@ module JellyHelper
   def attach_javascript_component_javascript_tag(*components)
     components = [components].flatten
     javascript_tag <<-JS
-      $(document).ready(function() {
+      jQuery(document).ready(function() {
         Jelly.attach.apply(Jelly, #{components.to_json});
       });
     JS

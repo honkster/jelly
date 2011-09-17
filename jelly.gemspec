@@ -4,8 +4,8 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{jelly}
-  s.version = "0.9.2"
+  s.name = %q{honkster-jelly}
+  s.version = "0.9.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pivotal Labs, Inc"]
@@ -21,15 +21,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
   s.summary = %q{a sweet unobtrusive javascript framework for jQuery and Rails}
-
-  s.add_runtime_dependency("capybara", ["= 0.4.1.2"])
-  s.add_runtime_dependency("jeweler", ["= 1.6.2"])
-  s.add_runtime_dependency("rails", ["= 3.0.8"])
-  s.add_runtime_dependency("rake", ["= 0.9.2"])
-  s.add_runtime_dependency("rr", ["= 1.0.2"])
-  s.add_runtime_dependency("rspec", ["= 2.6.0"])
-  s.add_runtime_dependency("rspec-rails", ["= 2.6.1"])
-  s.add_runtime_dependency("sqlite3", ["= 1.3.3"])
-  s.add_runtime_dependency("rails", [">= 2.3.0"])
 end
 

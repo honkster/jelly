@@ -2,3 +2,5 @@
 *.svn
 pkg
 b
+*.gem
+*.gemspec

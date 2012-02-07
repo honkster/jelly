@@ -1,6 +1,5 @@
 /**
- *  Jelly. a sweet unobtrusive javascript framework
- *  for jQuery and Rails
+ *  Jelly. a sweet unobtrusive javascript framework for Rails
  *
  *  version 0.8.13
  *
@@ -11,27 +10,35 @@
  *
  */
 
-(function($) {
+(function () {
   if (!window.Jelly) window.Jelly = {};
   var Jelly = window.Jelly;
   if (!Function.prototype.bind) {
-    Function.prototype.bind = function(object) {
+    Function.prototype.bind = function (object) {
       var self = this;
-      return function() {
+      return function () {
         return self.apply(object, arguments);
       }
     }
   }
-  $.extend(Jelly, {
-    init: function() {
+  var extend = function (destination, source) {
+    for (var m in source) {
+      if (source.hasOwnProperty(m)) {
+        destination[m] = source[m];
+      }
+    }
+    return destination;
+  };
+  extend(Jelly, {
+    init:function () {
       this.observers = [];
       this.attach = this.Observers.attach;
       this.notifyObservers = this.Observers.notify;
       this.Pages.init();
     },
 
-    Observers: {
-      attach: function() {
+    Observers:{
+      attach:function () {
         if (this === Jelly) {
           return Jelly.Observers.attach.apply(this.observers, arguments);
         }
@@ -54,23 +61,23 @@
         }
       },
 
-      evaluateComponent: function(component) {
+      evaluateComponent:function (component) {
         return eval(component);
       },
 
-      pushIfObserver: function(observer) {
+      pushIfObserver:function (observer) {
         if (observer) {
           this.push(observer);
         }
       },
 
-      notify: function(instructions) {
+      notify:function (instructions) {
         if (this === Jelly) {
           return Jelly.Observers.notify.apply(this.observers, arguments);
         }
         var previousNotifying = Jelly.Observers.notifying;
         Jelly.Observers.notifying = true;
-        if (!$.isArray(instructions)) {
+        if (Object.prototype.toString.call(instructions) !== "[object Array]") {
           instructions = [instructions];
         }
 
@@ -102,7 +109,7 @@
         Jelly.Observers.notifying = previousNotifying;
       },
 
-      notifyObserver: function(observer, method, arguments) {
+      notifyObserver:function (observer, method, arguments) {
         if (observer[method]) {
           if (observer.detach && observer.detach()) {
             Jelly.Observers.garbageCollectObserver.call(this, observer);
@@ -112,39 +119,39 @@
         }
       },
 
-      notifying: false,
+      notifying:false,
 
-      garbageCollectObserver: function(observer) {
+      garbageCollectObserver:function (observer) {
         var index = this.indexOf(observer);
         if (index > -1) {
           Jelly.Observers.remove.call(this, index, index + 1);
         }
       },
 
-      remove: function(from, to) {
+      remove:function (from, to) {
         var rest = this.slice((to || from) + 1 || this.length);
         this.length = from < 0 ? this.length + from : from;
         return this.push.apply(this, rest);
       }
     },
 
-    Pages: {
-      init: function() {
+    Pages:{
+      init:function () {
         this.all = {};
         Jelly.all = this.all; // Deprecated
       },
 
-      add: function(name) {
+      add:function (name) {
         var page = new Jelly.Page.Constructor(name);
         for (var i = 1; i < arguments.length; i++) {
-          $.extend(page, arguments[i]);
+          extend(page, arguments[i]);
         }
         return page;
       }
     },
 
-    Page: {
-      init: function(controllerName, actionName) {
+    Page:{
+      init:function (controllerName, actionName) {
         var page = Jelly.Pages.all[controllerName] || new Jelly.Page.Constructor(controllerName);
         window.page = page;
         if (page.all) page.all();
@@ -152,7 +159,7 @@
         page.loaded = true;
         return page;
       },
-      Constructor: function(name) {
+      Constructor:function (name) {
         this.loaded = false;
         this.documentHref = Jelly.Location.documentHref;
 
@@ -161,11 +168,11 @@
       }
     },
 
-    Location: {
-      on_redirect: function(location) {
+    Location:{
+      on_redirect:function (location) {
         this.window().top.location.href = location;
       },
-      window: function() {
+      window:function () {
         return window;
       }
     }
@@ -173,4 +180,4 @@
   Jelly.add = Jelly.Pages.add; // Deprecated
 
   Jelly.init();
-})(jQuery);
+})();

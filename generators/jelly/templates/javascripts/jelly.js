@@ -12,7 +12,7 @@
  */
 
 (function($) {
-  if (!window.Jelly) window.Jelly = new Object();
+  if (!window.Jelly) window.Jelly = {};
   var Jelly = window.Jelly;
   if (!Function.prototype.bind) {
     Function.prototype.bind = function(object) {
@@ -32,7 +32,7 @@
 
     Observers: {
       attach: function() {
-        if (this == Jelly) {
+        if (this === Jelly) {
           return Jelly.Observers.attach.apply(this.observers, arguments);
         }
         for (var i = 0; i < arguments.length; i++) {
@@ -65,7 +65,7 @@
       },
 
       notify: function(instructions) {
-        if (this == Jelly) {
+        if (this === Jelly) {
           return Jelly.Observers.notify.apply(this.observers, arguments);
         }
         var previousNotifying = Jelly.Observers.notifying;
@@ -173,4 +173,4 @@
   Jelly.add = Jelly.Pages.add; // Deprecated
 
   Jelly.init();
-})(jQuery)
+})(jQuery);

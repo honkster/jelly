@@ -163,7 +163,7 @@
 
     Location: {
       on_redirect: function(location) {
-        this.Window().top.location.href = location;
+        this.window().top.location.href = location;
       },
       window: function() {
         return window;

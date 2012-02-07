@@ -641,7 +641,8 @@ describe("Jelly.Location", function() {
 
   describe(".on_redirect", function() {
     it("sets top.location.href to the given location", function() {
-      window.top = {location: {}};
+      var window = {top: {location: {}}}
+      spyOn(Jelly.Location, "window").andReturn(window);
       Jelly.Location.on_redirect("http://mars.com");
       expect(window.top.location.href).toEqual("http://mars.com");
     });

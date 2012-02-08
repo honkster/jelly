@@ -20,5 +20,9 @@ module Jelly
     def jelly_attachment_hash(component_name, *args)
       {'component' => component_name, 'arguments' => args}
     end
+
+    def jelly_attachment_array(component_name, *args)
+      [component_name, *args]
+    end
   end
 end

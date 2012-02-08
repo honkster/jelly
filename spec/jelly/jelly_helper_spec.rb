@@ -13,16 +13,15 @@ describe JellyHelper, :type => :helper do
         controller.action_name {'super_good_action'}
       end
       stub(helper).controller {stub_controller}
-      mock(helper).form_authenticity_token {'areallysecuretoken'}
     end
 
     it "should create a javascript include tag that attaches the Jelly.Location and Jelly.Page components" do
       output = helper.spread_jelly
       output.should include('<script type="text/javascript">')
       doc = Nokogiri::HTML(output)
-      argument = jelly_attach_arguments(doc.css("script")[1].inner_html)
-      argument.should include({'component' => "Jelly.Location", 'arguments' => []})
-      argument.should include({'component' => "Jelly.Page", 'arguments' => ['MyFunController', 'super_good_action']})
+      argument = jelly_attach_arguments(doc.at("script").inner_html)
+      argument.should include(["Jelly.Location"])
+      argument.should include(["Jelly.Page", 'MyFunController', 'super_good_action'])
     end
   end
 
@@ -62,8 +61,8 @@ describe JellyHelper, :type => :helper do
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg5')
       helper.instance_variable_get(:@jelly_attachments).should == [
-        {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']},
-        {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg5']},
+        ["MyComponent", 'arg1', 'arg2', 'arg3'],
+        ["MyComponent", 'arg1', 'arg2', 'arg5'],
       ]
     end
 
@@ -71,16 +70,16 @@ describe JellyHelper, :type => :helper do
       helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
       expected_args = ['arg1','arg2','arg3'].to_json
       helper.instance_variable_get(:@jelly_attachments).should == [
-        {'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']}
+        ["MyComponent", 'arg1', 'arg2', 'arg3']
       ]
 
       html = helper.spread_jelly
       doc = Nokogiri::HTML(html)
-      document_ready_tag = doc.css("script")[1]
+      document_ready_tag = doc.at("script")
       document_ready_tag.inner_html.should include("jQuery(document).ready(function() {")
       document_ready_part = document_ready_tag.inner_html.split("\n")[3]
       arguments = jelly_attach_arguments(document_ready_part)
-      arguments.should include({'component' => "MyComponent", 'arguments' => ['arg1', 'arg2', 'arg3']})
+      arguments.should include(["MyComponent", 'arg1', 'arg2', 'arg3'])
     end
 
   end

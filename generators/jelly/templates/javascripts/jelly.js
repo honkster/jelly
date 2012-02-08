@@ -42,22 +42,36 @@
         if (this === Jelly) {
           return Jelly.Observers.attach.apply(this.observers, arguments);
         }
+        var self = Jelly.Observers;
         for (var i = 0; i < arguments.length; i++) {
           var definitionOrComponent = arguments[i];
           if (definitionOrComponent.component) {
-            var component = Jelly.Observers.evaluateComponent(definitionOrComponent.component);
-            if (component.init) {
-              var initReturnValue = component.init.apply(component, definitionOrComponent.arguments);
-              if (initReturnValue === false || initReturnValue === null) {
-              } else {
-                Jelly.Observers.pushIfObserver.call(this, initReturnValue || component);
-              }
-            } else {
-              Jelly.Observers.pushIfObserver.call(this, component);
-            }
+            self.attachFromDefinition.call(
+              this,
+              self.evaluateComponent(definitionOrComponent.component),
+              definitionOrComponent.arguments
+            );
+          } else if (Object.prototype.toString.call(definitionOrComponent) === "[object Array]") {
+            self.attachFromDefinition.call(
+              this,
+              self.evaluateComponent(definitionOrComponent[0]),
+              definitionOrComponent.slice(1)
+            );
           } else {
-            Jelly.Observers.pushIfObserver.call(this, Jelly.Observers.evaluateComponent(definitionOrComponent));
+            self.pushIfObserver.call(this, Jelly.Observers.evaluateComponent(definitionOrComponent));
           }
+        }
+      },
+
+      attachFromDefinition:function (component, args) {
+        if (component.init) {
+          var initReturnValue = component.init.apply(component, args);
+          if (initReturnValue === false || initReturnValue === null) {
+          } else {
+            Jelly.Observers.pushIfObserver.call(this, initReturnValue || component);
+          }
+        } else {
+          Jelly.Observers.pushIfObserver.call(this, component);
         }
       },
 

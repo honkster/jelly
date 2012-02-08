@@ -14,18 +14,10 @@ module JellyHelper
   def spread_jelly
     attach_javascript_component("Jelly.Location")
     attach_javascript_component("Jelly.Page", controller.controller_path.camelcase, controller.action_name)
-    <<-HTML
-      #{window_token_javascript_tag}
-      #{attach_javascript_component_javascript_tag(jelly_attachments)}
-    HTML
+    attach_javascript_component_javascript_tag(jelly_attachments)
   end
 
-  def window_token_javascript_tag
-    javascript_tag("window._token = '#{form_authenticity_token}';")
-  end
-
-  def attach_javascript_component_javascript_tag(*components)
-    components = [components].flatten
+  def attach_javascript_component_javascript_tag(components)
     javascript_tag <<-JS
       jQuery(document).ready(function() {
         Jelly.attach.apply(Jelly, #{components.to_json});
@@ -38,7 +30,7 @@ module JellyHelper
   end
 
   def attach_javascript_component(component_name, *args)
-    key = jelly_attachment_hash(component_name, *args)
+    key = jelly_attachment_array(component_name, *args)
     unless jelly_attachments.include? key
       jelly_attachments << key
     end

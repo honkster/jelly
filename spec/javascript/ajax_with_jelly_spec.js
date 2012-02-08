@@ -48,23 +48,6 @@ describe("Jelly", function() {
       expect(ajaxParams['type']).toEqual('DELETE');
     });
 
-    describe("whether to set authenticity token", function() {
-      it("should set an auth token when type is not a GET", function() {
-        var ajaxParams = $.ajaxWithJelly.params({type: "NON-GET"});
-        expect(ajaxParams['data']['authenticity_token']).toEqual(our_token);
-      });
-
-      it("should not set an auth token when type is not passed in", function() {
-        var ajaxParams = $.ajaxWithJelly.params();
-        expect(ajaxParams['data']).toEqual(undefined);
-      });
-
-      it("should not set an auth token when type is GET", function() {
-        var ajaxParams = $.ajaxWithJelly.params({type: "GET"});
-        expect(ajaxParams['data']).toEqual(undefined);
-      });
-    });
-
     describe(".ajaxWithJelly.params.success", function() {
       describe("when no observers are passed into params", function() {
         it("calls Jelly.notifyObservers on Jelly.observers", function() {

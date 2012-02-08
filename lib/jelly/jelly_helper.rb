@@ -18,11 +18,7 @@ module JellyHelper
   end
 
   def attach_javascript_component_javascript_tag(components)
-    javascript_tag <<-JS
-      jQuery(document).ready(function() {
-        Jelly.attach.apply(Jelly, #{components.to_json});
-      });
-    JS
+    javascript_tag "Jelly.attach.apply(Jelly, #{components.to_json});"
   end
 
   def clear_jelly_attached

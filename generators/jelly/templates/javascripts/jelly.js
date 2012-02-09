@@ -1,7 +1,7 @@
 /**
  *  Jelly. a sweet unobtrusive javascript framework for Rails
  *
- *  version 0.13.1
+ *  version 0.13.2
  *
  * Copyright (c) 2009 Pivotal Labs
  * Licensed under the MIT license.

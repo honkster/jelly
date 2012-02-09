@@ -4,7 +4,7 @@ module JellyHelper
   def application_jelly_files(jelly_files_path_from_javascripts = '', rails_root = RAILS_ROOT)
     rails_root = File.expand_path(rails_root)
     (
-      Dir[File.expand_path("#{rails_root}/public/javascripts/#{jelly_files_path_from_javascripts}/components/**/*.js")] +
+    Dir[File.expand_path("#{rails_root}/public/javascripts/#{jelly_files_path_from_javascripts}/components/**/*.js")] +
       Dir[File.expand_path("#{rails_root}/public/javascripts/#{jelly_files_path_from_javascripts}/pages/**/*.js")]
     ).map do |path|
       path.gsub("#{rails_root}/public/javascripts/", "").gsub(/\.js$/, "")
@@ -29,17 +29,21 @@ module JellyHelper
     jelly_ops.clear
   end
 
-  def jelly_attach(component_name, *args)
-    op = jelly_attach_op(component_name, *args)
-    unless jelly_ops.include? op
-      jelly_ops << op
-    end
+  def jelly_attach(component_name, *args, &block)
+    jelly_add_op jelly_attach_op(component_name, *args), &block
   end
 
-  def jelly_notify(message_name, *args)
-    op = jelly_notify_op(message_name, *args)
+  def jelly_notify(message_name, *args, &block)
+    jelly_add_op jelly_notify_op(message_name, *args), &block
+  end
+
+  def jelly_add_op(op, &block)
     unless jelly_ops.include? op
-      jelly_ops << op
+      if block
+        yield(op)
+      else
+        jelly_ops << op
+      end
     end
   end
 

@@ -62,7 +62,7 @@
           throw "op " + JSON.stringify(op) + " is not an attach op"
         }
         var args = [op[1]];
-        args.concat.apply(args, op.slice(2));
+        args.push.apply(args, op.slice(2));
         Jelly.Observers.attach.apply(this, args);
       },
 

@@ -4,3 +4,163 @@ Rendered inline template (0.6ms)
 Rendered inline template (2.7ms)
 Rendered inline template (0.6ms)
 Rendered inline template (0.5ms)
+Rendered inline template (3.3ms)
+Rendered inline template (5.1ms)
+Rendered inline template (49.6ms)
+Rendered inline template (0.7ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.7ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.6ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.5ms)
+ERROR: compiling _inline_template__4250666335939761138_20798240__364331264306469961 RAISED inline template:4: syntax error, unexpected keyword_end, expecting ')'
+    end );@output_buffer.safe_concat(');
+       ^
+inline template:6: syntax error, unexpected keyword_ensure, expecting ')'
+inline template:8: syntax error, unexpected keyword_end, expecting ')'
+Function body:           def _inline_template__4250666335939761138_20798240__364331264306469961(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, nil;_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('        Jelly.run(    ');@output_buffer.append= (
+      instance_eval(&controller.instance_variable_get(:@jelly_block))
+      jelly_ops.to_json.html_safe
+    end );@output_buffer.safe_concat(');
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:255:in `module_eval'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:255:in `compile'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:134:in `block in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `block in instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:127:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:59:in `block in _render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `block in instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:56:in `_render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:26:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:115:in `_render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:109:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:102:in `render_to_string'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:93:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/rendering.rb:17:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/usr/local/rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activerecord-3.0.8/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/usr/local/share/workspace/jelly/lib/jelly/jelly_controller.rb:16:in `render_jelly_ops'
+/usr/local/share/workspace/jelly/spec/jelly/jelly_controller_spec.rb:37:in `block (5 levels) in <top (required)>'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:48:in `instance_eval'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:48:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:107:in `with_around_hooks'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:45:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:294:in `block in run_examples'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:290:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:290:in `run_examples'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:262:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `block (2 levels) in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/reporter.rb:12:in `report'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:21:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:80:in `run_in_process'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:69:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:11:in `block in autorun'
+Rendered inline template (20.4ms)
+ERROR: compiling _inline_template___253321040281697148_22554220__2159469102249027230 RAISED inline template:4: syntax error, unexpected keyword_end, expecting ')'
+    end );@output_buffer.safe_concat('
+       ^
+inline template:7: syntax error, unexpected keyword_ensure, expecting ')'
+inline template:9: syntax error, unexpected keyword_end, expecting ')'
+Function body:           def _inline_template___253321040281697148_22554220__2159469102249027230(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, nil;_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('        Jelly.run(    ');@output_buffer.append= (
+      instance_eval(&controller.instance_variable_get(:@jelly_block))
+      jelly_ops.to_json.html_safe
+    end );@output_buffer.safe_concat('
+');@output_buffer.safe_concat(');
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:255:in `module_eval'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:255:in `compile'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:134:in `block in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `block in instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/template.rb:127:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:59:in `block in _render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `block in instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/notifications.rb:52:in `instrument'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:56:in `_render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_view/render/rendering.rb:26:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:115:in `_render_template'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:109:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:102:in `render_to_string'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/abstract_controller/rendering.rb:93:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/rendering.rb:17:in `render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/usr/local/rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activesupport-3.0.8/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/activerecord-3.0.8/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/actionpack-3.0.8/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/usr/local/share/workspace/jelly/lib/jelly/jelly_controller.rb:16:in `render_jelly_ops'
+/usr/local/share/workspace/jelly/spec/jelly/jelly_controller_spec.rb:37:in `block (5 levels) in <top (required)>'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:48:in `instance_eval'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:48:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:107:in `with_around_hooks'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example.rb:45:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:294:in `block in run_examples'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:290:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:290:in `run_examples'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:262:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/example_group.rb:263:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `block (2 levels) in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `map'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:24:in `block in run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/reporter.rb:12:in `report'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/command_line.rb:21:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:80:in `run_in_process'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:69:in `run'
+/usr/local/share/workspace/jelly/b/ruby/1.9.1/gems/rspec-core-2.6.4/lib/rspec/core/runner.rb:11:in `block in autorun'
+Rendered inline template (19.8ms)
+Rendered inline template (0.9ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.6ms)
+Rendered inline template (0.5ms)
+Rendered inline template (0.7ms)
+Rendered inline template (0.7ms)
+Rendered inline template (0.7ms)

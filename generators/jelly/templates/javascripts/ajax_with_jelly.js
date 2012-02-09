@@ -17,8 +17,8 @@ if(!window.Jelly) window.Jelly = {};
     return $.extend({
       dataType: 'json',
       cache: false,
-      success : function(callbacks) {
-        Jelly.Observers.notify.call(otherParams.observers || Jelly.observers, callbacks);
+      success : function(ops) {
+        Jelly.Observers.run.apply(otherParams.observers || Jelly.observers, ops);
       }
     }, otherParams);
   };

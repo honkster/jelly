@@ -32,38 +32,46 @@
   extend(Jelly, {
     init:function () {
       this.observers = [];
+      this.run = this.Observers.run;
       this.attach = this.Observers.attach;
       this.notifyObservers = this.Observers.notify;
       this.Pages.init();
     },
 
     Observers:{
+      run:function () {
+        if (this === Jelly) {
+          return Jelly.Observers.run.apply(this.observers, arguments);
+        }
+        for (var i=0, len=arguments.length; i < len; i++) {
+          var op = arguments[i];
+          switch (op[0]) {
+            case ("attach"):
+              Jelly.Observers.runAttachOp.call(this, op);
+              break;
+            case ("notify"):
+              Jelly.Observers.runNotifyOp.call(this, op);
+              break;
+          }
+
+        }
+      },
+
+      runAttachOp:function (op) {
+        if (op[0] !== "attach") {
+          throw "op " + JSON.stringify(op) + " is not an attach op"
+        }
+        var args = [op[1]];
+        args.concat.apply(args, op.slice(2));
+        Jelly.Observers.attach.apply(this, args);
+      },
+
       attach:function () {
         if (this === Jelly) {
           return Jelly.Observers.attach.apply(this.observers, arguments);
         }
-        var self = Jelly.Observers;
-        for (var i = 0; i < arguments.length; i++) {
-          var definitionOrComponent = arguments[i];
-          if (definitionOrComponent.component) {
-            self.attachFromDefinition.call(
-              this,
-              self.evaluateComponent(definitionOrComponent.component),
-              definitionOrComponent.arguments
-            );
-          } else if (Object.prototype.toString.call(definitionOrComponent) === "[object Array]") {
-            self.attachFromDefinition.call(
-              this,
-              self.evaluateComponent(definitionOrComponent[0]),
-              definitionOrComponent.slice(1)
-            );
-          } else {
-            self.pushIfObserver.call(this, Jelly.Observers.evaluateComponent(definitionOrComponent));
-          }
-        }
-      },
-
-      attachFromDefinition:function (component, args) {
+        var component = Jelly.Observers.evaluateComponent(arguments[0]);
+        var args = Array.prototype.slice.call(arguments, 1);
         if (component.init) {
           var initReturnValue = component.init.apply(component, args);
           if (initReturnValue === false || initReturnValue === null) {
@@ -85,50 +93,38 @@
         }
       },
 
-      notify:function (instructions) {
+      runNotifyOp:function(op) {
+        if (op[0] !== "notify") {
+          throw "op " + JSON.stringify(op) + " is not a notify op"
+        }
+        var args = [op[1]];
+        args.push.apply(args, op.slice(2));
+        Jelly.Observers.notify.apply(this, args);
+      },
+
+      notify:function () {
         if (this === Jelly) {
           return Jelly.Observers.notify.apply(this.observers, arguments);
         }
-        var previousNotifying = Jelly.Observers.notifying;
-        Jelly.Observers.notifying = true;
-        if (Object.prototype.toString.call(instructions) !== "[object Array]") {
-          instructions = [instructions];
+
+        var observers = this.slice(0);
+        var message = arguments[0];
+        var args = Array.prototype.slice.call(arguments, 1);
+        var instruction = [message];
+        instruction.push.apply(instruction, args);
+        for (var i = 0, len = observers.length; i < len; i++) {
+          var observer = observers[i];
+          Jelly.Observers.notifyObserver.call(this, observer, message, args);
+          Jelly.Observers.notifyObserver.call(this, observer, 'on_notify', instruction);
         }
-
-        var pristineObservers = this.slice(0);
-        var observers;
-        for (var i = 0; i < instructions.length; i++) {
-          var instruction = instructions[i];
-
-          // Deprecate 'on' in favor of making each page action a Component.
-          if (instruction.on) {
-            observers = [eval(instruction.on)];
-          } else {
-            observers = pristineObservers;
-          }
-
-          if (instruction.method) {
-            for (var j = 0; j < observers.length; j++) {
-              var observer = observers[j];
-              Jelly.Observers.notifyObserver.call(this, observer, instruction.method, instruction.arguments);
-              Jelly.Observers.notifyObserver.call(this, observer, 'on_notify', [instruction]);
-            }
-          }
-
-          if (instruction.attach) {
-            Jelly.Observers.attach.apply(this, instruction.attach);
-          }
-        }
-
-        Jelly.Observers.notifying = previousNotifying;
       },
 
-      notifyObserver:function (observer, method, arguments) {
+      notifyObserver:function (observer, method, args) {
         if (observer[method]) {
           if (observer.detach && observer.detach()) {
             Jelly.Observers.garbageCollectObserver.call(this, observer);
           } else {
-            observer[method].apply(observer, arguments);
+            observer[method].apply(observer, args);
           }
         }
       },

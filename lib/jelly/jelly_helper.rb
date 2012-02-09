@@ -12,33 +12,61 @@ module JellyHelper
   end
 
   def spread_jelly
-    attach_javascript_component("Jelly.Location")
-    attach_javascript_component("Jelly.Page", controller.controller_path.camelcase, controller.action_name)
-    attach_javascript_component_javascript_tag(jelly_attachments)
+    jelly_attach("Jelly.Location")
+    jelly_attach("Jelly.Page", controller.controller_path.camelcase, controller.action_name)
+    jelly_run_javascript_tag(jelly_ops)
   end
 
-  def attach_javascript_component_javascript_tag(components)
-    javascript_tag "Jelly.attach.apply(Jelly, #{components.to_json});"
+  def jelly_run_javascript_tag(ops)
+    javascript_tag jelly_run_javascript(ops)
   end
 
-  def clear_jelly_attached
-    jelly_attachments.clear
+  def jelly_run_javascript(ops)
+    "Jelly.run.apply(Jelly, #{ops.to_json});"
   end
 
-  def attach_javascript_component(component_name, *args)
-    key = jelly_attachment_array(component_name, *args)
-    unless jelly_attachments.include? key
-      jelly_attachments << key
+  def jelly_clear_ops
+    jelly_ops.clear
+  end
+
+  def jelly_attach(component_name, *args)
+    op = jelly_attach_op(component_name, *args)
+    unless jelly_ops.include? op
+      jelly_ops << op
     end
   end
 
-  def attach_javascript_component_on_ready(component_name, *args)
-    warn "attach_javascript_component_on_ready is deprecated since attach_javascript_component adds components to be attached in a $(document).ready block\n#{puts caller.join("\n\t")}"
-    attach_javascript_component(component_name, *args)
+  def jelly_notify(message_name, *args)
+    op = jelly_notify_op(message_name, *args)
+    unless jelly_ops.include? op
+      jelly_ops << op
+    end
+  end
+
+  def jelly_ops
+    @jelly_ops ||= []
+  end
+
+  ### Old Methods ###
+
+  def attach_javascript_component_javascript_tag(components)
+    raise Jelly::OldMethodError
+  end
+
+  def clear_jelly_attached
+    raise Jelly::OldMethodError
+  end
+
+  def attach_javascript_component(component_name, *args)
+    raise Jelly::OldMethodError
+  end
+
+  def jelly_attach_on_ready(component_name, *args)
+    raise Jelly::OldMethodError
   end
 
   def jelly_attachments
-    @jelly_attachments ||= []
+    raise Jelly::OldMethodError
   end
 
 end

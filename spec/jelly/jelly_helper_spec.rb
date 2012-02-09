@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper.rb')
 
 describe JellyHelper, :type => :helper do
 
-  def jelly_attach_arguments(html)
-    JSON.parse(Regexp.new('Jelly\.attach\.apply\(Jelly, (.*)\);').match(html)[1])
+  def jelly_ops(html)
+    JSON.parse(Regexp.new('Jelly\.run\.apply\(Jelly, (.*)\);').match(html)[1])
   end
 
   describe "#spread_jelly" do
@@ -19,9 +19,9 @@ describe JellyHelper, :type => :helper do
       output = helper.spread_jelly
       output.should include('<script type="text/javascript">')
       doc = Nokogiri::HTML(output)
-      argument = jelly_attach_arguments(doc.at("script").inner_html)
-      argument.should include(["Jelly.Location"])
-      argument.should include(["Jelly.Page", 'MyFunController', 'super_good_action'])
+      ops = jelly_ops(doc.at("script").inner_html)
+      ops.should include(["attach", "Jelly.Location"])
+      ops.should include(["attach", "Jelly.Page", 'MyFunController', 'super_good_action'])
     end
   end
 
@@ -45,7 +45,7 @@ describe JellyHelper, :type => :helper do
     end
   end
 
-  describe "#attach_javascript_component" do
+  describe "#jelly_attach" do
     before do
       def helper.form_authenticity_token
         "12345"
@@ -53,32 +53,31 @@ describe JellyHelper, :type => :helper do
     end
 
     after do
-      helper.clear_jelly_attached()
+      helper.jelly_clear_ops()
     end
 
     it "fails to add multiple calls to Jelly.attach for the same component" do
-      helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
-      helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
-      helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg5')
-      helper.instance_variable_get(:@jelly_attachments).should == [
-        ["MyComponent", 'arg1', 'arg2', 'arg3'],
-        ["MyComponent", 'arg1', 'arg2', 'arg5'],
+      helper.jelly_attach("MyComponent", 'arg1', 'arg2', 'arg3')
+      helper.jelly_attach("MyComponent", 'arg1', 'arg2', 'arg3')
+      helper.jelly_attach("MyComponent", 'arg1', 'arg2', 'arg5')
+      helper.instance_variable_get(:@jelly_ops).should == [
+        ["attach", "MyComponent", 'arg1', 'arg2', 'arg3'],
+        ["attach", "MyComponent", 'arg1', 'arg2', 'arg5'],
       ]
     end
 
     it "adds a call to Jelly.attach" do
-      helper.attach_javascript_component("MyComponent", 'arg1', 'arg2', 'arg3')
-      expected_args = ['arg1','arg2','arg3'].to_json
-      helper.instance_variable_get(:@jelly_attachments).should == [
-        ["MyComponent", 'arg1', 'arg2', 'arg3']
-      ]
+      helper.jelly_attach("MyComponent", 'arg1', 'arg2', 'arg3')
+      helper.instance_variable_get(:@jelly_ops).should include(
+        ["attach", "MyComponent", 'arg1', 'arg2', 'arg3']
+      )
 
       html = helper.spread_jelly
       doc = Nokogiri::HTML(html)
       document_ready_tag = doc.at("script")
       document_ready_part = document_ready_tag.inner_html.split("\n")[2]
-      arguments = jelly_attach_arguments(document_ready_part)
-      arguments.should include(["MyComponent", 'arg1', 'arg2', 'arg3'])
+      arguments = jelly_ops(document_ready_part)
+      arguments.should include(["attach", "MyComponent", 'arg1', 'arg2', 'arg3'])
     end
 
   end

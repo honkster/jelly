@@ -30,260 +30,42 @@ describe("Jelly", function() {
       expect(newPage.index).toEqual(indexFn);
     });
   });
+  
+  describe(".run", function() {
+    describe("attach", function() {
+      describe("when the component does not respond to init", function() {
+        describe("when the component is referenced as a String", function() {
+          beforeEach(function() {
+            window.MyComponent = {
+            };
+          });
+  
+          afterEach(function() {
+            delete window.MyComponent;
+          });
+  
+          it("attaches the component to Jelly.observers", function() {
+            Jelly.run(["attach", "MyComponent"]);
+            expect(Jelly.observers).toContain(MyComponent);
+          });
+        });
+  
+        describe("when the component is referenced as itself", function() {
+          it("attaches the component to Jelly.observers", function() {
+            var component = {};
+            Jelly.run(["attach", component]);
+            expect(Jelly.observers).toContain(component);
+          });
+        });
+      })
+    });
+  });
 
   describe(".attach", function() {
-    describe("when the argument contains a 'component' key", function() {
-      describe("when the component does not respond to init", function() {
-        describe("when the component is referenced as a String", function() {
-          beforeEach(function() {
-            window.MyComponent = {
-            };
-          });
-
-          afterEach(function() {
-            delete window.MyComponent;
-          });
-
-          it("attaches the component to Jelly.observers", function() {
-            Jelly.attach({component: "MyComponent"});
-            expect(Jelly.observers).toContain(MyComponent);
-          });
-        });
-
-        describe("when the component is referenced as itself", function() {
-          it("attaches the component to Jelly.observers", function() {
-            var component = {};
-            Jelly.attach({component: component});
-            expect(Jelly.observers).toContain(component);
-          });
-        });
-      });
-
-      describe("when component responds to init", function() {
-        describe("when the component's init method returns undefined", function() {
-          describe("when the component is referenced as a String", function() {
-            beforeEach(function() {
-              window.MyComponent = {
-                init: function() {
-                }
-              };
-            });
-
-            afterEach(function() {
-              delete window.MyComponent;
-            });
-
-            it("calls the init method on the component and attaches the component to Jelly.observers", function() {
-              spyOn(MyComponent, 'init');
-              Jelly.attach({component: MyComponent, arguments: [1, 2]});
-              expect(MyComponent.init).wasCalledWith(1, 2);
-              expect(Jelly.observers).toContain(MyComponent);
-            });
-          });
-
-          describe("when the component is referenced as itself", function() {
-            var component;
-            beforeEach(function() {
-              component = {
-                init: function() {
-                }
-              };
-            });
-
-            it("calls the init method on the component and attaches the component to Jelly.observers", function() {
-              spyOn(component, 'init');
-              Jelly.attach({component: component, arguments: [1, 2]});
-              expect(component.init).wasCalledWith(1, 2);
-              expect(Jelly.observers).toContain(component);
-            });
-          });
-        });
-
-        describe("when the component's init method returns false", function() {
-          var component;
-          beforeEach(function() {
-            component = {
-              init: function() {
-                component.initCalled = true;
-                return false;
-              }
-            };
-          });
-
-          it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
-            var originalObserversLength = Jelly.observers.length;
-            Jelly.attach({component: component, arguments: [1, 2]});
-            expect(component.initCalled).toBeTruthy();
-            expect(Jelly.observers.length).toEqual(originalObserversLength);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-
-        describe("when the component's init method returns null", function() {
-          var component;
-          beforeEach(function() {
-            component = {
-              init: function() {
-                component.initCalled = true;
-                return null;
-              }
-            };
-          });
-
-          it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
-            var originalObserversLength = Jelly.observers.length;
-            Jelly.attach({component: component, arguments: [1, 2]});
-            expect(component.initCalled).toBeTruthy();
-            expect(Jelly.observers.length).toEqual(originalObserversLength);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-
-        describe("when the component's init method returns an object", function() {
-          it("attaches the returned object (instead of the component) to Jelly.observers", function() {
-            var observer = new Object();
-            var component = {
-              init: function() {
-                return observer;
-              }
-            };
-            Jelly.attach({component: component, arguments: [1, 2]});
-            expect(Jelly.observers).toContain(observer);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-      });
-    });
-
-    describe("when the argument is an array", function() {
-      describe("when the component does not respond to init", function() {
-        describe("when the component is referenced as a String", function() {
-          beforeEach(function() {
-            window.MyComponent = {
-            };
-          });
-
-          afterEach(function() {
-            delete window.MyComponent;
-          });
-
-          it("attaches the component to Jelly.observers", function() {
-            Jelly.attach(["MyComponent"]);
-            expect(Jelly.observers).toContain(MyComponent);
-          });
-        });
-
-        describe("when the component is referenced as itself", function() {
-          it("attaches the component to Jelly.observers", function() {
-            var component = {};
-            Jelly.attach([component]);
-            expect(Jelly.observers).toContain(component);
-          });
-        });
-      });
-
-      describe("when component responds to init", function() {
-        describe("when the component's init method returns undefined", function() {
-          describe("when the component is referenced as a String", function() {
-            beforeEach(function() {
-              window.MyComponent = {
-                init: function() {
-                }
-              };
-            });
-
-            afterEach(function() {
-              delete window.MyComponent;
-            });
-
-            it("calls the init method on the component and attaches the component to Jelly.observers", function() {
-              spyOn(MyComponent, 'init');
-              Jelly.attach([MyComponent, 1, 2]);
-              expect(MyComponent.init).wasCalledWith(1, 2);
-              expect(Jelly.observers).toContain(MyComponent);
-            });
-          });
-
-          describe("when the component is referenced as itself", function() {
-            var component;
-            beforeEach(function() {
-              component = {
-                init: function() {
-                }
-              };
-            });
-
-            it("calls the init method on the component and attaches the component to Jelly.observers", function() {
-              spyOn(component, 'init');
-              Jelly.attach([component, 1, 2]);
-              expect(component.init).wasCalledWith(1, 2);
-              expect(Jelly.observers).toContain(component);
-            });
-          });
-        });
-
-        describe("when the component's init method returns false", function() {
-          var component;
-          beforeEach(function() {
-            component = {
-              init: function() {
-                component.initCalled = true;
-                return false;
-              }
-            };
-          });
-
-          it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
-            var originalObserversLength = Jelly.observers.length;
-            Jelly.attach([component, 1, 2]);
-            expect(component.initCalled).toBeTruthy();
-            expect(Jelly.observers.length).toEqual(originalObserversLength);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-
-        describe("when the component's init method returns null", function() {
-          var component;
-          beforeEach(function() {
-            component = {
-              init: function() {
-                component.initCalled = true;
-                return null;
-              }
-            };
-          });
-
-          it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
-            var originalObserversLength = Jelly.observers.length;
-            Jelly.attach([component, 1, 2]);
-            expect(component.initCalled).toBeTruthy();
-            expect(Jelly.observers.length).toEqual(originalObserversLength);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-
-        describe("when the component's init method returns an object", function() {
-          it("attaches the returned object (instead of the component) to Jelly.observers", function() {
-            var observer = new Object();
-            var component = {
-              init: function() {
-                return observer;
-              }
-            };
-            Jelly.attach([component, 1, 2]);
-            expect(Jelly.observers).toContain(observer);
-            expect(Jelly.observers).toNotContain(component);
-          });
-        });
-      });
-    });
-
-    describe("when the argument does not contain a 'component' key", function() {
+    describe("when the component does not respond to init", function() {
       describe("when the component is referenced as a String", function() {
         beforeEach(function() {
           window.MyComponent = {
-            init: function() {
-            }
           };
         });
 
@@ -291,24 +73,112 @@ describe("Jelly", function() {
           delete window.MyComponent;
         });
 
-        it("does not call init and attaches the component to Jelly.observers", function() {
-          spyOn(MyComponent, 'init');
+        it("attaches the component to Jelly.observers", function() {
           Jelly.attach("MyComponent");
-          expect(MyComponent.init).wasNotCalled();
           expect(Jelly.observers).toContain(MyComponent);
         });
       });
 
       describe("when the component is referenced as itself", function() {
-        it("does not call init and attaches the component to Jelly.observers", function() {
-          var component = {
+        it("attaches the component to Jelly.observers", function() {
+          var component = {};
+          Jelly.attach(component);
+          expect(Jelly.observers).toContain(component);
+        });
+      });
+    });
+
+    describe("when component responds to init", function() {
+      describe("when the component's init method returns undefined", function() {
+        describe("when the component is referenced as a String", function() {
+          beforeEach(function() {
+            window.MyComponent = {
+              init: function() {
+              }
+            };
+          });
+
+          afterEach(function() {
+            delete window.MyComponent;
+          });
+
+          it("calls the init method on the component and attaches the component to Jelly.observers", function() {
+            spyOn(MyComponent, 'init');
+            Jelly.attach(MyComponent, 1, 2);
+            expect(MyComponent.init).wasCalledWith(1, 2);
+            expect(Jelly.observers).toContain(MyComponent);
+          });
+        });
+
+        describe("when the component is referenced as itself", function() {
+          var component;
+          beforeEach(function() {
+            component = {
+              init: function() {
+              }
+            };
+          });
+
+          it("calls the init method on the component and attaches the component to Jelly.observers", function() {
+            spyOn(component, 'init');
+            Jelly.attach(component, 1, 2);
+            expect(component.init).wasCalledWith(1, 2);
+            expect(Jelly.observers).toContain(component);
+          });
+        });
+      });
+
+      describe("when the component's init method returns false", function() {
+        var component;
+        beforeEach(function() {
+          component = {
             init: function() {
+              component.initCalled = true;
+              return false;
             }
           };
-          spyOn(component, 'init');
-          Jelly.attach(component);
-          expect(component.init).wasNotCalled();
-          expect(Jelly.observers).toContain(component);
+        });
+
+        it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
+          var originalObserversLength = Jelly.observers.length;
+          Jelly.attach(component, 1, 2);
+          expect(component.initCalled).toBeTruthy();
+          expect(Jelly.observers.length).toEqual(originalObserversLength);
+          expect(Jelly.observers).toNotContain(component);
+        });
+      });
+
+      describe("when the component's init method returns null", function() {
+        var component;
+        beforeEach(function() {
+          component = {
+            init: function() {
+              component.initCalled = true;
+              return null;
+            }
+          };
+        });
+
+        it("calls the init method on the component and does not attaches an observer to Jelly.observers", function() {
+          var originalObserversLength = Jelly.observers.length;
+          Jelly.attach(component, 1, 2);
+          expect(component.initCalled).toBeTruthy();
+          expect(Jelly.observers.length).toEqual(originalObserversLength);
+          expect(Jelly.observers).toNotContain(component);
+        });
+      });
+
+      describe("when the component's init method returns an object", function() {
+        it("attaches the returned object (instead of the component) to Jelly.observers", function() {
+          var observer = new Object();
+          var component = {
+            init: function() {
+              return observer;
+            }
+          };
+          Jelly.attach(component, 1, 2);
+          expect(Jelly.observers).toContain(observer);
+          expect(Jelly.observers).toNotContain(component);
         });
       });
     });
@@ -320,31 +190,7 @@ describe("Jelly", function() {
         on_my_method : function() {
         }
       });
-      Jelly.attach({component: "Jelly.Page", arguments: ["MyPage", "index"]});
-    });
-
-    describe(".notifying", function() {
-      it("should be set to true only while observers are being notified", function() {
-        expect(Jelly.Observers.notifying).toBe(false);
-        var notifyingWasSet = false;
-        page.on_my_method = function() {
-          notifyingWasSet = Jelly.Observers.notifying;
-        }
-        Jelly.notifyObservers({
-          "method":"on_my_method"
-        });
-        expect(notifyingWasSet).toBe(true);
-      });
-
-      it("should be reset to its prior value when notification is complete", function() {
-        Jelly.Observers.notifying = true;
-        spyOn(page, 'on_my_method');
-        Jelly.notifyObservers({
-          "method":"on_my_method"
-        });
-        expect(page.on_my_method).wasCalled();
-        expect(Jelly.Observers.notifying).toBe(true);
-      });
+      Jelly.attach("Jelly.Page", "MyPage", "index");
     });
 
     describe("when bound to the default Jelly.observers collection", function() {
@@ -352,10 +198,7 @@ describe("Jelly", function() {
         describe("when the notify method is defined on the page", function() {
           it("should call the notify method on the page", function() {
             spyOn(page, 'on_my_method');
-            Jelly.notifyObservers({
-              "arguments":["arg1", "arg2"],
-              "method":"on_my_method"
-            });
+            Jelly.notifyObservers("on_my_method", "arg1", "arg2");
             expect(page.on_my_method).wasCalled();
             expect(page.on_my_method).wasCalledWith('arg1', 'arg2');
           });
@@ -366,7 +209,7 @@ describe("Jelly", function() {
                 on_my_method: function() {
                 }
               };
-              Jelly.attach({component: component, arguments: []});
+              Jelly.attach(component);
 
               var functionsCalledInOrder = [];
               spyOn(page, 'on_my_method').andCallFake(function() {
@@ -375,10 +218,7 @@ describe("Jelly", function() {
               spyOn(component, 'on_my_method').andCallFake(function() {
                 functionsCalledInOrder.push("component");
               });
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_method"
-              });
+              Jelly.notifyObservers("on_my_method", "arg1", "arg2");
               expect(page.on_my_method).wasCalled();
               expect(page.on_my_method).wasCalledWith('arg1', 'arg2');
               expect(component.on_my_method).wasCalled();
@@ -391,10 +231,7 @@ describe("Jelly", function() {
         describe("when the page object does not define the notify method", function() {
           it("does not blow up", function() {
             expect(page.on_my_undefined_method).toBe(undefined);
-            Jelly.notifyObservers({
-              "arguments":["arg1", "arg2"],
-              "method":"on_my_undefined_method"
-            });
+            Jelly.notifyObservers("on_my_undefined_method", "arg1", "arg2");
           });
         });
       });
@@ -410,62 +247,6 @@ describe("Jelly", function() {
         afterEach(function() {
           delete GlobalObject;
         });
-
-        describe("when the 'on' parameter is a string", function() {
-          describe("when the 'on' object defines the notify method", function() {
-            it("should call on_my_method on that object and not on the rest of the observers", function() {
-              spyOn(GlobalObject, 'on_my_method');
-              spyOn(GlobalObject.secondObject, 'on_my_method');
-              Jelly.attach(GlobalObject);
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_method",
-                "on":"GlobalObject.secondObject"
-              });
-              expect(GlobalObject.on_my_method).wasNotCalled();
-              expect(GlobalObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
-            });
-          });
-
-          describe("when the 'on' object does not define the notify method", function() {
-            it("does not blow up", function() {
-              expect(GlobalObject.secondObject.on_my_undefined_method).toBe(undefined);
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_undefined_method",
-                "on":"GlobalObject.secondObject"
-              });
-            });
-          })
-        });
-
-        describe("when the 'on' parameter is an object", function() {
-          describe("when the 'on' object defines the notify method", function() {
-            it("should call on_my_method on that object and not on the rest of the observers", function() {
-              spyOn(GlobalObject, 'on_my_method');
-              spyOn(GlobalObject.secondObject, 'on_my_method');
-              Jelly.attach(GlobalObject);
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_method",
-                "on": GlobalObject.secondObject
-              });
-              expect(GlobalObject.on_my_method).wasNotCalled();
-              expect(GlobalObject.secondObject.on_my_method).wasCalledWith('arg1', 'arg2');
-            });
-          });
-
-          describe("when the 'on' object does not define the notify method", function() {
-            it("does not blow up", function() {
-              expect(GlobalObject.secondObject.on_my_undefined_method).toBe(undefined);
-              Jelly.notifyObservers({
-                "arguments":["arg1", "arg2"],
-                "method":"on_my_undefined_method",
-                "on": GlobalObject.secondObject
-              });
-            });
-          })
-        });
       });
     });
 
@@ -475,8 +256,8 @@ describe("Jelly", function() {
           on_my_method: function() {
           }
         };
-        Jelly.attach({component: "Jelly.Page", arguments: ["MyPage", "index"]});
-        Jelly.attach({component: component, arguments: []});
+        Jelly.attach("Jelly.Page", "MyPage", "index");
+        Jelly.attach(component);
 
         spyOn(page, 'on_my_method');
         spyOn(component, 'on_my_method');
@@ -488,10 +269,7 @@ describe("Jelly", function() {
         }};
         spyOn(customObserver2, 'on_my_method');
 
-        Jelly.notifyObservers.call([customObserver1, customObserver2], {
-          "arguments":["arg1", "arg2"],
-          "method":"on_my_method"
-        });
+        Jelly.notifyObservers.call([customObserver1, customObserver2], "on_my_method", "arg1", "arg2");
 
         expect(page.on_my_method).wasNotCalled();
         expect(component.on_my_method).wasNotCalled();
@@ -504,19 +282,16 @@ describe("Jelly", function() {
     });
 
     describe("an observer listening to on_notify", function() {
-      it("receives a notify event with the notify hash", function() {
+      it("receives a notify instruction", function() {
         var observer = {
           on_notify: function() {
           }
         };
         spyOn(observer, 'on_notify');
 
-        Jelly.notifyObservers.call([observer], {
-          "arguments":["arg1", "arg2"],
-          "method":"on_my_method"
-        });
+        Jelly.notifyObservers.call([observer], "on_my_method", "arg1", "arg2");
 
-        expect(observer.on_notify).wasCalledWith({method: "on_my_method", arguments: ["arg1", "arg2"]});
+        expect(observer.on_notify).wasCalledWith("on_my_method", "arg1", "arg2");
       });
     });
 
@@ -527,7 +302,7 @@ describe("Jelly", function() {
           on_my_method: function() {
           }
         };
-        Jelly.attach({component: observer, arguments: []});
+        Jelly.attach(observer);
         expect(Jelly.observers).toContain(observer);
       });
 
@@ -539,7 +314,7 @@ describe("Jelly", function() {
         it("leaves the observer in Jelly.observers and calls the notify method on the observer", function() {
           spyOn(observer, "on_my_method");
 
-          Jelly.notifyObservers({method: "on_my_method", arguments: []});
+          Jelly.notifyObservers("on_my_method");
           expect(Jelly.observers).toContain(observer);
           expect(observer.on_my_method).wasCalled();
         });
@@ -556,14 +331,14 @@ describe("Jelly", function() {
               on_my_method: function() {
               }
             };
-            Jelly.attach({component: anotherObserver, arguments: []});
+            Jelly.attach(anotherObserver);
           });
 
           it("removes observer in Jelly.observers, does not call the notify method on the observer, and calls the other observers", function() {
             spyOn(observer, "on_my_method");
             spyOn(anotherObserver, "on_my_method");
 
-            Jelly.notifyObservers({method: "on_my_method", arguments: []});
+            Jelly.notifyObservers("on_my_method");
             expect(Jelly.observers).toNotContain(observer);
             expect(observer.on_my_method).wasNotCalled();
             expect(anotherObserver.on_my_method).wasCalled();
@@ -580,78 +355,11 @@ describe("Jelly", function() {
           it("leaves the observer in Jelly.observers and calls the notify method on the observer", function() {
             spyOn(observer, "on_my_method");
 
-            Jelly.notifyObservers({method: "on_my_method", arguments: []});
+            Jelly.notifyObservers("on_my_method");
             expect(Jelly.observers).toContain(observer);
             expect(observer.on_my_method).wasCalled();
           });
         });
-      });
-    });
-
-    describe("when the 'attach' parameter is present", function() {
-      var observers;
-      beforeEach(function() {
-        MyComponent = {
-          init: function() {
-          }
-        };
-        spyOn(MyComponent, 'init');
-        observers = [];
-      });
-
-      describe("when the method is present", function() {
-        it("attaches the given attachments to the observers and calls the notify on the recently attached observer", function() {
-          Jelly.notifyObservers.call(observers, {
-            "arguments":["arg1", "arg2"],
-            "method":"on_my_method",
-            "attach":[
-              {
-                component: "MyComponent",
-                arguments: [1,2]
-              }
-            ]
-          });
-          expect(MyComponent.init).wasCalledWith(1, 2);
-          expect(Jelly.observers).toNotContain(MyComponent);
-          expect(observers).toContain(MyComponent);
-        });
-      });
-
-      describe("when there are no other paramaters present", function() {
-        it("attaches the given attachments to the observers", function() {
-          Jelly.notifyObservers.call(observers, {
-            "attach":[
-              {
-                component: "MyComponent",
-                arguments: [1,2]
-              }
-            ]
-          });
-          expect(Jelly.observers).toNotContain(MyComponent);
-          expect(observers).toContain(MyComponent);
-        });
-      });
-    });
-
-    describe("when given an array of notify instructions", function() {
-      it("notifies the observers of all of the notify hashes", function() {
-        page.on_my_method2 = function() {
-        };
-        spyOn(page, 'on_my_method');
-        spyOn(page, 'on_my_method2');
-        Jelly.notifyObservers([
-          {
-            "arguments":["arg1", "arg2"],
-            "method":"on_my_method"
-          },
-          {
-            "arguments": ["arg3"],
-            "method":"on_my_method2"
-          }
-        ]);
-
-        expect(page.on_my_method).wasCalledWith('arg1', 'arg2');
-        expect(page.on_my_method2).wasCalledWith('arg3');
       });
     });
   });

@@ -1,6 +1,4 @@
 describe("Jelly", function() {
-  var our_token;
-
   beforeEach(function() {
     Jelly.add("MyPage", {
       on_my_method : function() {
@@ -8,8 +6,6 @@ describe("Jelly", function() {
     });
     page = Jelly.all["MyPage"];
     spyOn($, 'ajax');
-    our_token = "authenticity token";
-    window._token = our_token;
   });
 
   afterEach(function() {
@@ -57,14 +53,11 @@ describe("Jelly", function() {
               observerArgs = [arg1, arg2];
             }
           };
-          Jelly.attach({component: observer, arguments: []});
+          Jelly.attach(observer);
           expect(Jelly.observers).toContain(observer);
 
-          var notification = {
-            "arguments":["arg1", "arg2"],
-            "method":"on_my_method"
-          };
-          $.ajaxWithJelly.params().success(notification);
+          var op = ["notify", "on_my_method", "arg1", "arg2"];
+          $.ajaxWithJelly.params().success([op]);
 
           expect(observerArgs).toEqual(["arg1", "arg2"]);
         });
@@ -81,11 +74,8 @@ describe("Jelly", function() {
           var observers = [observer];
           expect(Jelly.observers).toNotContain(observer);
 
-          var notification = {
-            "arguments":["arg1", "arg2"],
-            "method":"on_my_method"
-          };
-          $.ajaxWithJelly.params({observers: observers}).success(notification);
+          var op = ["notify", "on_my_method", "arg1", "arg2"];
+          $.ajaxWithJelly.params({observers: observers}).success([op]);
 
           expect(observerArgs).toEqual(["arg1", "arg2"]);
         });

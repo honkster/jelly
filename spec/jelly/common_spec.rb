@@ -8,49 +8,15 @@ describe Jelly::Common do
     end.new
   end
 
-  describe "#jelly_notify_hash" do
-    it "creates a hash with a method and arguments" do
-      fixture.jelly_notify_hash("my_method", 1, 2, 3).should == {
-        "method" => "my_method",
-        "arguments" => [1, 2, 3]
-      }
+  describe "#jelly_notify_op" do
+    it "creates a notify op with a method and arguments" do
+      fixture.jelly_notify_op("my_method", 1, 2, 3).should == ["notify", "my_method", 1, 2, 3]
     end
   end
 
-  describe "#jelly_method_call_hash" do
-    it "creates a hash with a object, method, and arguments" do
-      fixture.jelly_method_call_hash("MyObject", "my_method", 1, 2, 3).should == {
-        "on" => "MyObject",
-        "method" => "my_method",
-        "arguments" => [1, 2, 3]
-      }
-    end
-  end
-
-  describe "#jelly_callback_attach_hash" do
-    context "when passed attachments" do
-      it "creates a hash with the attach param being set to the given attachments" do
-        attachments = [
-          fixture.jelly_attachment_hash("Foo", 1, 2),
-          fixture.jelly_attachment_hash("Bar", 3),
-        ]
-        fixture.jelly_notify_attach_hash(attachments).should == {
-          "attach" => attachments
-        }
-      end
-    end
-
-    context "when not passed attachments" do
-      it "creates a hash with the attach param being set to #jelly_attachments" do
-        attachments = [
-          fixture.jelly_attachment_hash("Foo", 1, 2),
-          fixture.jelly_attachment_hash("Bar", 3),
-        ]
-        stub(fixture).jelly_attachments {attachments}
-        fixture.jelly_notify_attach_hash.should == {
-          "attach" => attachments
-        }
-      end
+  describe "#jelly_call_op" do
+    it "creates a call op with object, method, and arguments" do
+      fixture.jelly_call_op("MyObject", "my_method", 1, 2, 3).should == ["call", "MyObject", "my_method", 1, 2, 3]
     end
   end
 end
